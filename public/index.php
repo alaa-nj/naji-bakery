@@ -55,6 +55,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <?php foreach ($categories as $category): ?>
+    <?php $categoryIcon = category_icon_class($category['icon'] ?? ''); ?>
     <section class="category-section" id="cat-<?= e($category['id']) ?>" data-category-id="<?= e($category['id']) ?>">
         <h2 class="category-title brand-font"><span class="cat-icon"><i class="fa-solid <?= e(category_icon_class($category['icon'] ?? '')) ?>" aria-hidden="true"></i></span><?= e($category['name_ar']) ?></h2>
 
@@ -69,11 +70,16 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php else: ?>
             <div class="menu-list">
                 <?php foreach ($items as $item): ?>
-                    <?php $itemPhoto = !empty($item['image_path']) ? '../' . $item['image_path'] : (!empty($business['logo_path']) ? '../' . $business['logo_path'] : null); ?>
                     <div class="menu-list-item<?= $item['is_available'] ? '' : ' is-sold-out' ?>"
                          data-search="<?= e(mb_strtolower($item['name_ar'] . ' ' . ($item['description_ar'] ?? ''))) ?>">
-                        <?php if ($itemPhoto): ?>
-                            <img class="menu-list-photo" src="<?= e($itemPhoto) ?>" alt="" loading="lazy">
+                        <?php if (!empty($item['image_path'])): ?>
+                            <img class="menu-list-photo" src="../<?= e($item['image_path']) ?>" alt="" loading="lazy">
+                        <?php else: ?>
+                            <?php // No photo yet: the category's icon holds the spot, so rows stay aligned
+                                  // and an uploaded photo simply replaces it. ?>
+                            <span class="menu-list-photo menu-list-placeholder" aria-hidden="true">
+                                <i class="fa-solid <?= e($categoryIcon) ?>"></i>
+                            </span>
                         <?php endif; ?>
                         <div class="menu-list-main">
                             <h3 class="menu-list-name">
@@ -90,7 +96,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <?php if ($item['currency'] === 'USD'): ?>
                                 $ <?= format_price($item['price']) ?>
                             <?php else: ?>
-                                <span dir="ltr"><?= format_price($item['price']) ?> L.L.</span>
+                                <span dir="rtl"><?= format_price($item['price']) ?> ل.ل.</span>
                             <?php endif; ?>
                         </div>
                     </div>

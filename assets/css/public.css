@@ -367,8 +367,8 @@ body {
 /* ================= Menu list ================= */
 /* Name, optional description, price — reads like a printed menu. Each row
    also gets a small thumbnail; until an item has its own photo uploaded in
-   the admin panel, it falls back to the bakery logo so the layout is
-   consistent from day one instead of a mix of photos and empty gaps. */
+   the admin panel, its category's icon sits in a soft gold tile of the same
+   size, so rows stay aligned while photos are added a few at a time. */
 .menu-list {
     display: flex;
     flex-direction: column;
@@ -395,6 +395,21 @@ body {
     object-fit: cover;
     background: var(--color-bg);
     border: 1px solid var(--color-border);
+}
+
+/* Stand-in until a real photo is uploaded: quiet enough not to compete with
+   the item name, but still tells you which section you're in */
+.menu-list-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FBF5E9, #F4E8D0);
+    border-color: #EADBBE;
+    color: var(--color-gold);
+    font-size: 1.05rem;
+}
+.menu-list-placeholder i {
+    opacity: 0.8;
 }
 
 .menu-list-main {
@@ -446,9 +461,11 @@ body {
 }
 
 /* ================= Floating call / WhatsApp buttons ================= */
+/* Kept on the right, over the thumbnail column — the left side holds the
+   prices, which must never be covered. Lifted above the iPhone home bar. */
 .floating-actions {
     position: fixed;
-    bottom: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
     right: 1rem;
     z-index: 50;
     display: flex;
@@ -474,6 +491,15 @@ body {
 }
 .floating-btn:active {
     transform: scale(0.94);
+}
+
+/* Room at the very end of the page so the last items and the footer can
+   scroll clear of the two buttons instead of ending up underneath them */
+body:has(.floating-actions) .site-footer {
+    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom, 0px));
+}
+body:has(.floating-actions):not(:has(.site-footer)) {
+    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .whatsapp-btn {
