@@ -12,7 +12,7 @@ $item = [
     'name_ar' => '',
     'description_ar' => '',
     'price' => '',
-    'currency' => 'LBP',
+    'currency' => 'USD',
     'image_path' => '',
     'is_available' => 1,
 ];
@@ -39,7 +39,7 @@ if (post_was_too_large()) {
     $nameAr = trim($_POST['name_ar'] ?? '');
     $descriptionAr = trim($_POST['description_ar'] ?? '');
     $price = trim($_POST['price'] ?? '');
-    $currency = $_POST['currency'] ?? 'LBP';
+    $currency = $_POST['currency'] ?? 'USD';
     $isAvailable = isset($_POST['is_available']) ? 1 : 0;
     $removeImage = isset($_POST['remove_image']);
     $imagePath = $item['image_path']; // keep existing unless changed below
