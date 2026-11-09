@@ -135,7 +135,7 @@ $activePage = 'dashboard';
                                     <?php if ($item['price'] === null || $item['price'] == 0): ?>
                                         <span class="badge-noprice">No price</span>
                                     <?php else: ?>
-                                        <?= e(number_format($item['price'])) ?> <?= $item['currency'] === 'USD' ? '$' : 'L.L.' ?>
+                                        <?= e(format_price($item['price'])) ?> <?= $item['currency'] === 'USD' ? '$' : 'L.L.' ?>
                                     <?php endif; ?>
                                 </td>
                                 <td class="recent-date" title="<?= e(date('Y-m-d H:i', strtotime($item['created_at']))) ?>">

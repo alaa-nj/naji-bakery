@@ -36,6 +36,13 @@ function e($value) {
     return htmlspecialchars((string)($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
+// Formats a price number: keeps cents only when there are any
+// (2.5 -> "2.50", 0.1 -> "0.10", 250000 -> "250,000").
+function format_price($price) {
+    $price = (float)$price;
+    return number_format($price, floor($price) == $price ? 0 : 2);
+}
+
 // Reads a positive integer ID from GET/POST. Returns null if missing or invalid
 // (e.g. "abc", "-3", "5 OR 1=1").
 function input_id($type, $name) {

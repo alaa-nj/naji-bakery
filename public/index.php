@@ -88,9 +88,9 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="menu-list-price">
                             <?php if ($item['currency'] === 'USD'): ?>
-                                $ <?= number_format($item['price']) ?>
+                                $ <?= format_price($item['price']) ?>
                             <?php else: ?>
-                                <span dir="ltr"><?= number_format($item['price']) ?> L.L.</span>
+                                <span dir="ltr"><?= format_price($item['price']) ?> L.L.</span>
                             <?php endif; ?>
                         </div>
                     </div>

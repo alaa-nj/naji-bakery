@@ -127,7 +127,7 @@ $activePage = 'items';
                         <?php if ($item['price'] === null || $item['price'] == 0): ?>
                             —
                         <?php else: ?>
-                            <?= number_format($item['price']) ?> <?= $item['currency'] === 'USD' ? '$' : 'L.L.' ?>
+                            <?= format_price($item['price']) ?> <?= $item['currency'] === 'USD' ? '$' : 'L.L.' ?>
                         <?php endif; ?>
                     </td>
                     <td>
