@@ -1,0 +1,6 @@
+# Uploaded images only. Never run scripts from this folder, even if one
+# somehow gets uploaded with an image extension trick.
+<FilesMatch "\.(php\d?|phtml|phar|pl|py|cgi|sh|asp|aspx|jsp|htaccess)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes -ExecCGI

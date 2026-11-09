@@ -227,7 +227,7 @@ body.sidebar-collapsed .main-content {
 /* Attention panel */
 .attention-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 0; border-bottom: 1px solid #f2ead4; }
 .attention-item:last-child { border-bottom: none; }
-.attention-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+.attention-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px; flex-shrink: 0; }
 .dot-red { background-color: #d9534f; }
 .dot-gold { background-color: #C89B2B; }
 .attention-title { font-weight: 600; color: #1A1A1A; font-size: 0.92rem; margin-bottom: 0.15rem; }
@@ -341,4 +341,265 @@ table.dataTable tbody td {
 .toast-notification span {
     font-size: 0.9rem;
     color: #1A1A1A;
+}
+/* ------------------------------------------------------------------
+   Full-width layout + responsive behaviour
+   ------------------------------------------------------------------ */
+
+/* Content always fills the space next to the sidebar */
+.main-content {
+    min-width: 0;
+    min-height: 100vh;
+}
+
+/* Form pages: two columns on wide screens (image on the left, fields on
+   the right) so the form uses the full width instead of a narrow box. */
+.form-card { width: 100%; }
+.form-section-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #b0a68a;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+.form-label-soft {
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: 500;
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    border-top: 1px solid #f2ead4;
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+}
+.form-actions .btn-gold,
+.form-actions .btn-outline-soft { justify-content: center; min-width: 160px; }
+
+/* Tables: controls on top, table in its own scroll box (horizontal scroll on
+   small screens, sticky header when the list is long), pagination below. */
+.dt-top, .dt-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.dt-top { margin-bottom: 0.75rem; }
+.dt-bottom { margin-top: 0.75rem; }
+.dt-top .dataTables_length,
+.dt-top .dataTables_filter,
+.dt-bottom .dataTables_info,
+.dt-bottom .dataTables_paginate {
+    float: none !important;
+    text-align: left !important;
+    padding-top: 0 !important;
+    margin: 0 !important;
+}
+.table-scroll {
+    width: 100%;
+    overflow: auto;
+    max-height: calc(100vh - 220px);
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+}
+.table-scroll table.dataTable {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.table-scroll table.dataTable thead th {
+    position: sticky;
+    top: 0;
+    white-space: nowrap;
+}
+/* Action buttons: kept on one line and lined up on the right */
+th.col-actions, td.col-actions {
+    text-align: right !important;
+    white-space: nowrap;
+    width: 1%;
+}
+.col-actions .action-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; padding: 0; }
+td.col-nowrap, th.col-nowrap { white-space: nowrap; }
+
+/* Plain (non-DataTables) tables, e.g. the dashboard's Recently Added */
+.table-soft {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+.table-soft thead th {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 2;
+    border-bottom: 2px solid #f0e6cc;
+    color: #b0a68a;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.7rem 1rem;
+    white-space: nowrap;
+}
+.table-soft tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f7f1e1;
+}
+.table-soft tbody tr:last-child td { border-bottom: none; }
+.table-soft tbody tr:hover td { background: #fffdf7; }
+
+/* Shared bits used on several pages */
+.item-thumb {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background-color: #FDFBF6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d8c48a;
+    font-size: 1rem;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.item-name-ar { font-weight: 600; color: #1A1A1A; }
+.category-pill {
+    background-color: #FDFBF6;
+    color: #a8863a;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* Dashboard */
+.section-title { font-size: 1.05rem; margin-bottom: 0; }
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+.section-link { font-size: 0.82rem; font-weight: 600; color: #A67C1E; text-decoration: none; }
+.section-link:hover { color: #1A1A1A; }
+.stat-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: #FDFBF6;
+    color: #C89B2B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    float: right;
+}
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+.quick-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.9rem 1rem;
+    border: 1.5px solid #f0e6cc;
+    border-radius: 12px;
+    background: #fff;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-size: 0.86rem;
+    font-weight: 600;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.quick-action i {
+    font-size: 1.2rem;
+    color: #C89B2B;
+}
+.quick-action:hover {
+    border-color: #C89B2B;
+    background: #fffaf0;
+    color: #1A1A1A;
+    transform: translateY(-2px);
+}
+.quick-action.primary {
+    background: linear-gradient(135deg, #A67C1E, #C89B2B);
+    border-color: transparent;
+}
+.quick-action.primary i { color: #1A1A1A; }
+.table-scroll-free { max-height: none; }
+/* Wide screens: Quick Actions sits in the narrow right column -> 2 per row */
+@media (min-width: 1400px) { .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767.98px) { .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+#recentTable td:nth-child(2) { min-width: 180px; }
+.table-scroll .item-name-ar { min-width: 140px; }
+.recent-date { font-size: 0.8rem; color: #999; white-space: nowrap; }
+.empty-state { text-align: center; color: #aaa; padding: 2rem 1rem; }
+.empty-state i { font-size: 2rem; color: #e5ddc8; display: block; margin-bottom: 0.5rem; }
+
+/* Tablet and phone: the sidebar stays as a narrow icon rail and the content
+   keeps its place; opening the full sidebar slides it OVER the content
+   instead of squeezing the page. */
+@media (max-width: 991.98px) {
+    .main-content,
+    body.sidebar-collapsed .main-content {
+        margin-left: 76px;
+        padding: 1.75rem 1.5rem;
+    }
+    body:not(.sidebar-collapsed) .sidebar {
+        box-shadow: 0 0 40px rgba(0,0,0,0.35);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .main-content,
+    body.sidebar-collapsed .main-content {
+        padding: 1.25rem 0.9rem;
+    }
+    .page-title { font-size: 1.4rem; }
+    .page-header { margin-bottom: 1.25rem; }
+    .page-header .btn-gold,
+    .page-header .btn-outline-soft { width: 100%; justify-content: center; }
+    .page-header > div:first-child { width: 100%; }
+    .form-actions .btn-gold,
+    .form-actions .btn-outline-soft { width: 100%; }
+    .table-scroll { max-height: none; }
+    .dt-top .dataTables_filter input { width: 100%; margin-left: 0 !important; }
+    .dt-top .dataTables_filter, .dt-top .dataTables_filter label { width: 100%; }
+    .dt-bottom { justify-content: center; }
+    .card-soft:hover { transform: none; }
+    .stat-icon { display: none; }
+    .stat-number { font-size: 1.8rem; }
+    .toast-notification { left: 12px; right: 12px; bottom: 12px; min-width: 0; max-width: none; }
+}
+
+/* Status badges (Items page and dashboard) */
+.badge-unavailable {
+    background-color: #fbe4e2;
+    color: #c0392b;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+}
+.badge-noprice {
+    background-color: #fdecd2;
+    color: #b9770e;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    white-space: nowrap;
 }

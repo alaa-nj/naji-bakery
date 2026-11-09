@@ -1,0 +1,510 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Playfair+Display:ital,wght@1,500&family=Almarai:wght@400;700&family=Amiri:ital@1&display=swap');
+
+/* Brand palette in one place — change these to re-theme the whole page.
+   Cream page background, white cards, gold accents. Same Arabic-first
+   font stack everywhere: Cairo first, falling back to Tajawal then
+   IBM Plex Sans Arabic if a device doesn't have Cairo available. */
+:root {
+    --color-bg: #FAF7F0;
+    --color-card: #FFFFFF;
+    --color-border: #EFE6D8;
+    --color-text: #1A1A1A;
+    --color-text-muted: #8a8a8a;
+    --color-gold: #C6922E;
+    --color-gold-dark: #A6741E;
+    --theme-color: var(--color-gold); /* main theme color (header divider line) */
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Cairo', 'Tajawal', 'IBM Plex Sans Arabic', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    margin: 0;
+}
+
+.brand-font {
+    font-family: 'Cairo', 'Tajawal', 'IBM Plex Sans Arabic', sans-serif;
+    font-weight: 700;
+}
+
+/* ================= Header ================= */
+/* Centered logo with a refined "Since 1996" line under it, then a small
+   location/hours line. White fading into cream, with the thick gold
+   gradient line underneath. Kept compact so products show up quickly. */
+.menu-header {
+    position: relative;
+    padding: 0.4rem 1rem 0.65rem;
+    text-align: center;
+    background:
+        radial-gradient(ellipse 70% 90% at 50% 0%, #FFFFFF 40%, rgba(255, 255, 255, 0) 100%),
+        linear-gradient(180deg, #FFFFFF 0%, #FCF8F0 100%);
+    border-bottom: 3px solid var(--theme-color);
+    /* darker gold in the middle, lighter toward the edges */
+    border-image: linear-gradient(90deg, #E2C27F, var(--color-gold) 25%, var(--color-gold-dark) 50%, var(--color-gold) 75%, #E2C27F) 1;
+}
+
+/* The logo file has empty space around the artwork — the negative margins
+   pull the text up under it so the header isn't taller than it looks */
+.menu-header-logo {
+    margin: -0.55rem 0 -1.15rem;
+    line-height: 0;
+}
+
+/* The logo file is 419px square, so it stays sharp on retina screens at this size */
+.menu-header .logo {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    mix-blend-mode: multiply; /* the logo file has a white background — blend it into the cream */
+}
+
+/* "Since 1996": small italic serif between two fine gold hairlines */
+.header-since {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: var(--color-gold-dark);
+}
+.header-since::before,
+.header-since::after {
+    content: "";
+    width: 26px;
+    height: 1px;
+}
+.header-since::before { background: linear-gradient(90deg, transparent, var(--color-gold)); }
+.header-since::after  { background: linear-gradient(90deg, var(--color-gold), transparent); }
+
+/* Location + hours under the tagline: plain small text, gold icons, no pill */
+.header-info {
+    margin: 0.15rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.15rem 0.5rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #8C7B6B;
+}
+.header-info-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+.header-info-item i {
+    font-size: 11.5px;
+    color: var(--color-gold);
+}
+.header-info-dot {
+    font-size: 10px;
+    color: var(--color-gold);
+}
+
+/* Small round Instagram button in the top corner (only if set) */
+.header-social {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.6rem;
+    display: flex;
+    gap: 0.35rem;
+    z-index: 1;
+}
+.header-social-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+.header-social-btn:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+.header-social-btn.instagram {
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold));
+}
+
+/* Phones: logo a touch smaller, still the dominant element */
+@media (max-width: 575.98px) {
+    .menu-header { padding: 0.3rem 0.6rem 0.55rem; }
+    .menu-header-logo { margin: -0.45rem 0 -0.95rem; }
+    .menu-header .logo { width: 118px; height: 118px; }
+    .header-since { font-size: 0.78rem; }
+}
+
+/* Too narrow for one line: stack the two items centered, drop the dot */
+@media (max-width: 260px) {
+    .header-info { flex-direction: column; gap: 0.1rem; }
+    .header-info-dot { display: none; }
+}
+
+@media (max-width: 420px) {
+    .header-social { top: 0.35rem; left: 0.4rem; }
+    .header-social-btn { width: 26px; height: 26px; font-size: 0.85rem; }
+}
+
+/* ================= Footer ================= */
+/* Contact/hours/location info, demoted out of the header — still easy to
+   find, just not the first thing a customer sees. */
+.site-footer {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--color-card);
+    border-top: 2px solid var(--color-border);
+    text-align: center;
+}
+
+.site-footer-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem 0;
+    font-size: 0.8rem;
+    color: #666;
+}
+.site-footer-info span:not(:last-child)::after {
+    content: "|";
+    margin: 0 0.6rem;
+    color: var(--color-border);
+}
+.site-footer-info span, .site-footer-info a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: inherit;
+    text-decoration: none;
+}
+.site-footer-info a:hover {
+    color: var(--color-gold-dark);
+}
+.site-footer-info i {
+    color: var(--color-gold);
+}
+
+/* ================= Sticky category bar + search ================= */
+/* Stays at the top while scrolling. Chips scroll sideways on small screens;
+   tapping one smooth-scrolls to that section. */
+.menu-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(252, 248, 240, 0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 6px 16px rgba(120, 84, 20, 0.06);
+}
+
+.category-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-bar-track {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem 0.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -webkit-overflow-scrolling: touch;
+}
+.category-bar-track::-webkit-scrollbar {
+    display: none;
+}
+/* Desktop: there's room to show every category, so wrap onto centered rows
+   instead of hiding some off to the side (a mouse can't easily scroll sideways) */
+@media (min-width: 992px) {
+    .category-bar-track {
+        flex-wrap: wrap;
+        justify-content: center;
+        overflow-x: visible;
+        padding-top: 0.7rem;
+    }
+}
+/* On wide screens, center the chips when they all fit */
+.category-bar-track::before,
+.category-bar-track::after {
+    content: "";
+    margin: auto;
+}
+
+/* Premium pills: white with a hairline border and a soft lift; the active
+   one is filled gold. Same height and spacing for every pill. */
+.category-chip {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 38px;
+    padding: 0 1rem 0 1.05rem;
+    background: var(--color-card);
+    border: 1px solid #EADFCB;
+    border-radius: 999px;
+    box-shadow: 0 1px 3px rgba(120, 84, 20, 0.06);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2B2118;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+.category-chip i {
+    color: var(--theme-color);
+    font-size: 0.85rem;
+}
+.category-chip:hover {
+    border-color: #D9BF8C;
+    color: #2B2118;
+    box-shadow: 0 3px 10px rgba(120, 84, 20, 0.1);
+}
+.category-chip:active {
+    transform: scale(0.97);
+}
+.category-chip.active {
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(166, 116, 30, 0.3);
+}
+.category-chip.active i {
+    color: #fff;
+}
+.category-chip:focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+.search-row {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0.15rem 1rem 0.65rem;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 1rem;
+    background: var(--color-card);
+    border: 1px solid #EFE4D1;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(120, 84, 20, 0.07);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search-bar:focus-within {
+    border-color: #D9BF8C;
+    box-shadow: 0 0 0 3px rgba(198, 146, 46, 0.14), 0 2px 10px rgba(120, 84, 20, 0.07);
+}
+.search-bar i {
+    font-size: 0.95rem;
+    color: var(--color-gold-dark);
+}
+.search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--color-text);
+}
+.search-bar input::placeholder {
+    color: #857564;
+    opacity: 1;
+}
+
+.cat-icon {
+    margin-inline-end: 0.5rem;
+    color: var(--theme-color);
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.85em;
+}
+
+/* ================= Category sections ================= */
+.category-section {
+    padding: 1.5rem 1rem 0.5rem;
+    max-width: 720px; /* a plain list gets awkward gaps between name and price if it's too wide */
+    margin: 0 auto;
+    scroll-margin-top: calc(var(--sticky-h, 110px) + 8px); /* stops just below the sticky category bar */
+}
+
+.category-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.empty-category {
+    color: #a8a8a8;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+/* ================= Menu list ================= */
+/* Name, optional description, price — reads like a printed menu. Each row
+   also gets a small thumbnail; until an item has its own photo uploaded in
+   the admin panel, its category's icon sits in a soft gold tile of the same
+   size, so rows stay aligned while photos are added a few at a time. */
+.menu-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 64px;
+    padding: 0.4rem 0.25rem;
+    border-bottom: 1px solid #DCCFB8;
+}
+.menu-list-item:last-child {
+    border-bottom: none;
+}
+
+.menu-list-photo {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+}
+
+/* Stand-in until a real photo is uploaded: quiet enough not to compete with
+   the item name, but still tells you which section you're in */
+.menu-list-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FBF5E9, #F4E8D0);
+    border-color: #EADBBE;
+    color: var(--color-gold);
+    font-size: 1.05rem;
+}
+.menu-list-placeholder i {
+    opacity: 0.8;
+}
+
+.menu-list-main {
+    font-family: 'Almarai', 'Cairo', 'Tajawal', sans-serif;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.menu-list-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.menu-list-desc {
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0.2rem 0 0;
+}
+
+.menu-list-price {
+    font-family: 'Almarai', 'Cairo', 'Tajawal', sans-serif;
+    flex: 0 0 auto;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-gold);
+    white-space: nowrap;
+}
+
+/* Sold-out items stay visible (not hidden), just dimmed with a tag by the name */
+.sold-out-tag {
+    display: inline-block;
+    vertical-align: middle;
+    margin-inline-start: 0.5rem;
+    background: rgba(26, 26, 26, 0.85);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+}
+.menu-list-item.is-sold-out .menu-list-name,
+.menu-list-item.is-sold-out .menu-list-price {
+    opacity: 0.55;
+}
+.menu-list-item.is-sold-out .sold-out-tag {
+    opacity: 1; /* the tag itself should stay fully legible even though the row is dimmed */
+}
+
+/* ================= Floating call / WhatsApp buttons ================= */
+/* Kept on the right, over the thumbnail column — the left side holds the
+   prices, which must never be covered. Lifted above the iPhone home bar. */
+.floating-actions {
+    position: fixed;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    right: 1rem;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.floating-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+    transition: transform 0.15s ease;
+}
+.floating-btn:hover {
+    transform: scale(1.06);
+    color: #fff;
+}
+.floating-btn:active {
+    transform: scale(0.94);
+}
+
+/* Room at the very end of the page so the last items and the footer can
+   scroll clear of the two buttons instead of ending up underneath them */
+body:has(.floating-actions) .site-footer {
+    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom, 0px));
+}
+body:has(.floating-actions):not(:has(.site-footer)) {
+    padding-bottom: calc(8.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.whatsapp-btn {
+    background: #25D366; /* WhatsApp's own brand color — kept as-is for instant recognition */
+}
+.call-btn {
+    background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold));
+}
