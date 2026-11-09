@@ -1,44 +1,41 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['admin_id'])) {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Not authorized']);
-    exit;
-}
+define('AUTH_JSON', true);
+require '../includes/auth.php';
 
 require '../includes/db.php';
+require '../includes/upload.php';
 
 header('Content-Type: application/json');
 
+if (!csrf_valid()) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request. Please refresh the page and try again.']);
+    exit;
+}
+
 $action = $_POST['action'] ?? '';
 
+// Every action needs a valid item ID that exists in the database.
+$id = input_id(INPUT_POST, 'id');
+$existing = $id ? db_query("SELECT id, image_path FROM menu_items WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC) : false;
+if (!$existing) {
+    echo json_encode(['success' => false, 'message' => 'Item not found. Please refresh the page.']);
+    exit;
+}
+
 if ($action === 'toggle_availability') {
-    $id = (int)($_POST['id'] ?? 0);
-    $isAvailable = (int)($_POST['is_available'] ?? 0);
+    $isAvailable = ($_POST['is_available'] ?? '') === '1' ? 1 : 0;
 
-    if ($id <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Invalid item']);
-        exit;
-    }
-
-    $stmt = $pdo->prepare("UPDATE menu_items SET is_available = ? WHERE id = ?");
-    $stmt->execute([$isAvailable, $id]);
+    db_query("UPDATE menu_items SET is_available = ? WHERE id = ?", [$isAvailable, $id]);
 
     echo json_encode(['success' => true]);
     exit;
 }
 
 if ($action === 'delete') {
-    $id = (int)($_POST['id'] ?? 0);
+    db_query("DELETE FROM menu_items WHERE id = ?", [$id]);
 
-    if ($id <= 0) {
-        echo json_encode(['success' => false, 'message' => 'Invalid item']);
-        exit;
-    }
-
-    $stmt = $pdo->prepare("DELETE FROM menu_items WHERE id = ?");
-    $stmt->execute([$id]);
+    // Remove the item's photo from disk too
+    delete_upload($existing['image_path']);
 
     echo json_encode(['success' => true, 'message' => 'Item deleted']);
     exit;

@@ -1,0 +1,6 @@
+# Real database credentials (copy includes/config.example.php to create it)
+includes/config.php
+
+# Images uploaded from the admin panel (the built-in logos are tracked)
+uploads/item_*
+uploads/business_logo_*

@@ -1,14 +1,9 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: login.php');
-    exit;
-}
+require '../includes/auth.php';
 
 require '../includes/db.php';
 
-$business = $pdo->query("SELECT * FROM business_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
+$business = db_query("SELECT * FROM business_settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 $menuUrl = $business['menu_url'] ?? 'http://localhost/naji_bakery/public/index.php';
 
 $error = '';
@@ -18,11 +13,12 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newUrl = trim($_POST['menu_url'] ?? '');
 
-    if ($newUrl === '' || !filter_var($newUrl, FILTER_VALIDATE_URL)) {
+    if (!csrf_valid()) {
+        $error = 'Your session expired. Please try again.';
+    } elseif ($newUrl === '' || !is_web_url($newUrl)) {
         $error = 'Please enter a valid URL.';
     } else {
-        $stmt = $pdo->prepare("UPDATE business_settings SET menu_url = ? WHERE id = ?");
-        $stmt->execute([$newUrl, $business['id']]);
+        db_query("UPDATE business_settings SET menu_url = ? WHERE id = ?", [$newUrl, $business['id']]);
         $menuUrl = $newUrl;
         $success = 'Menu link updated.';
     }
@@ -40,10 +36,9 @@ $activePage = 'qr';
 <title>QR Code - Naji Bakery Admin</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<link rel="stylesheet" href="../assets/css/admin.css?v=12">
+<link rel="stylesheet" href="../assets/css/admin.css?v=<?= asset_version(dirname(__DIR__) . '/assets/css/admin.css') ?>">
 <style>
     .qr-card {
-        max-width: 480px;
         text-align: center;
     }
     .qr-image-wrap {
@@ -69,12 +64,6 @@ $activePage = 'qr';
         word-break: break-all;
         margin-bottom: 1.25rem;
     }
-    .form-label-soft {
-        font-size: 0.85rem;
-        color: #999;
-        font-weight: 500;
-    }
-
     @media print {
         .sidebar, .page-header, .url-settings-card, .no-print {
             display: none !important;
@@ -83,8 +72,10 @@ $activePage = 'qr';
             margin-left: 0 !important;
             padding: 0 !important;
         }
+        .qr-col { width: 100% !important; }
         .qr-card {
             margin: 0 auto;
+            max-width: 480px;
         }
     }
 </style>
@@ -102,14 +93,16 @@ $activePage = 'qr';
         </div>
     </div>
 
-    <div class="card-soft p-4 qr-card">
+    <div class="row g-4">
+    <div class="col-12 col-lg-6 qr-col">
+    <div class="card-soft p-4 qr-card h-100">
         <div class="qr-image-wrap">
-            <img src="<?= htmlspecialchars($qrImageUrl) ?>" alt="Menu QR Code" id="qrImage">
+            <img src="<?= e($qrImageUrl) ?>" alt="Menu QR Code" id="qrImage">
         </div>
-        <div class="qr-url-display"><?= htmlspecialchars($menuUrl) ?></div>
+        <div class="qr-url-display"><?= e($menuUrl) ?></div>
 
         <div class="d-flex gap-2 justify-content-center no-print">
-            <a href="<?= htmlspecialchars($qrImageUrl) ?>" download="naji-bakery-menu-qr.png" class="btn-gold">
+            <a href="qr_download.php" class="btn-gold">
                 <i class="bi bi-download"></i> Download
             </a>
             <button onclick="window.print()" class="btn-outline-soft">
@@ -118,21 +111,26 @@ $activePage = 'qr';
         </div>
     </div>
 
-    <div class="card-soft p-4 mt-4 url-settings-card" style="max-width: 480px;">
+    </div>
+    <div class="col-12 col-lg-6 url-settings-card">
+    <div class="card-soft p-4 h-100">
         <h6 class="brand-font mb-3">Menu Link</h6>
 
         <?php if ($error): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+            <div class="alert alert-danger"><?= e($error) ?></div>
         <?php endif; ?>
         <?php if ($success): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+            <div class="alert alert-success"><?= e($success) ?></div>
         <?php endif; ?>
 
         <form method="POST">
+            <?= csrf_field() ?>
             <label class="form-label-soft">Update this once you go live with a real domain.</label>
-            <input type="url" name="menu_url" class="form-control mb-3" value="<?= htmlspecialchars($menuUrl) ?>" required>
-            <button type="submit" class="btn-outline-soft w-100 justify-content-center">Update Link & Regenerate QR</button>
+            <input type="url" name="menu_url" class="form-control mb-3" value="<?= e($menuUrl) ?>" required>
+            <button type="submit" class="btn-outline-soft w-100 justify-content-center">Update Link &amp; Regenerate QR</button>
         </form>
+    </div>
+    </div>
     </div>
 
 </div>
