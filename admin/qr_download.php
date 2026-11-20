@@ -16,8 +16,10 @@ $qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' .
 $imageData = @file_get_contents($qrImageUrl);
 
 if ($imageData === false) {
-    http_response_code(502);
-    echo 'Could not generate the QR code image right now. Please try again.';
+    // Some hosts (e.g. InfinityFree's free plan) block the server from
+    // fetching other websites. Fall back to opening the QR image directly,
+    // so it can still be saved with right-click > "Save image as".
+    header('Location: ' . $qrImageUrl, true, 302);
     exit;
 }
 
